@@ -38,7 +38,10 @@ dependencies {
 //    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.1.6'
-    compile 'io.requery:requery:1.0.2'
-    compile 'io.requery:requery-android:1.0.2'
-    annotationProcessor 'io.requery:requery-processor:1.0.2'
+
+    compile 'io.requery:requery:1.1.0'
+    compile 'io.requery:requery-android:1.1.0'
+    annotationProcessor 'io.requery:requery-processor:1.1.0'
+
+    compile 'net.zetetic:android-database-sqlcipher:3.5.4@aar'
 }

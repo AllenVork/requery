@@ -3,7 +3,6 @@ package com.zhangruofan.requery.model;
 import io.requery.Entity;
 import io.requery.Generated;
 import io.requery.Key;
-import io.requery.OneToOne;
 
 /**
  * Created by zhangruofan on 16-12-26.

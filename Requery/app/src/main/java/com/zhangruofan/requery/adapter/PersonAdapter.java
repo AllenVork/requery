@@ -9,11 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.zhangruofan.requery.R;
 import com.zhangruofan.requery.model.PersonProxy;
 import com.zhangruofan.requery.util.Constants;
 import com.zhangruofan.requery.util.CustomizeSubscriber;
 import com.zhangruofan.requery.view.PersonEditActivity;
+
 import io.requery.android.QueryRecyclerAdapter;
 import io.requery.query.Result;
 import io.requery.rx.SingleEntityStore;

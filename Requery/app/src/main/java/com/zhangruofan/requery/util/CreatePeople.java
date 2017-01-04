@@ -1,20 +1,16 @@
 package com.zhangruofan.requery.util;
 
-import android.util.Log;
-
 import com.zhangruofan.requery.model.AddressEntity;
+import com.zhangruofan.requery.model.Email;
 import com.zhangruofan.requery.model.Person;
 import com.zhangruofan.requery.model.PersonProxy;
 import com.zhangruofan.requery.model.Phone;
 import com.zhangruofan.requery.model.PhoneEntity;
 
-import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.UUID;
 
 import io.requery.rx.SingleEntityStore;
@@ -46,8 +42,22 @@ public class CreatePeople {
 
             person.setName(first + " " + last);
             person.setUUID(UUID.randomUUID());
-            person.setEmail(Character.toLowerCase(first.charAt(0)) +
-                    last.toLowerCase() + "@gmail.com");
+            List<Email> emails = new LinkedList<>();
+            {
+                Email email = new Email();
+                email.setEmail(Character.toLowerCase(first.charAt(0)) +
+                        last.toLowerCase() + "@gmail.com");
+                emails.add(email);
+            }
+
+            {
+                Email email = new Email();
+                email.setEmail(Character.toLowerCase(first.charAt(1)) +
+                        last.toLowerCase() + "@gmail.com");
+                emails.add(email);
+            }
+
+            person.setEmail(emails);
             person.setBirthday(new Date());
 
             AddressEntity address = new AddressEntity();

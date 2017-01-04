@@ -1,7 +1,5 @@
 package com.zhangruofan.requery.util;
 
-import android.graphics.Color;
-
 /**
  * Created by zhangruofan on 16-12-26.
  */
