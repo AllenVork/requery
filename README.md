@@ -36,7 +36,9 @@ android {
 DatabaseSource source = new DatabaseSource(this, Models.DEFAULT, 1);
 
 Configuration configuration = source.getConfiguration();
-SingleEntityStore<Persistable> dataStore = RxSupport.toReactiveStore(new EntityDataStore<Persistable>(configuration));
+
+SingleEntityStore<Persistable> data = RxSupport.toReactiveStore(
+        new EntityDataStore<Persistable>(configuration));
 ```
 **DatabaseSource**    
 　　DatabaseSource 继承自 SqliteOpenHelper，它可以为你自动创建表。你需要传入数据库的版本号，你也可以选择传入数据库名之类的信息。默认会创建一个名为”default”的数据库。    
@@ -104,8 +106,8 @@ abstract class AbstractPerson {
 }
 ```
 
-你可能有如下疑问：
-1.为什么接口里面是方法而抽象类中是变量？
+你可能有如下疑问：    
+1.为什么接口里面是方法而抽象类中是变量？    
 　　首先要弄清楚的是无论是接口还是抽象类，里面的数据是为了创建表中的 column 的。所以只需要用变量就行了，但是接口里面的变量是必须要初始化的，所以用 set 和 get 方法。编译器会自动提取 set×××() 中的×××作为表中的 Column（不是get)。get 方法你按需设置。
 
 2.上面有很多注解，都是什么鬼?    
@@ -133,7 +135,7 @@ public interface Address {}
 　　**@Column** 你可以指定该列的一些信息，譬如“unique”，“index”，“name”等。指定表中该 column 的 name 是什么。譬如上面 Address getAddress() 。如果不指定 Column 的 name 的话，表中的该列为“address”，指定 @Column(name = "ad") 的话，就为“ad”而不是“address”了。     
 　　还有很多注解，就不在这里一一解释了。      
 
-3.我们看到上面 Person 中有 Address 表和 Phone 表，怎么上面的注解都不一样啊？麻痹！
+3.我们看到上面 Person 中有 Address 表和 Phone 表，怎么上面的注解都不一样啊？麻痹！    
 　　亲，亲，不一样是因为 Person 中只有一个 Address 而 Phone 却是一个列表。上面讲过 @ForeignKey 的列 默认会存关联的表的主键（或者其余的唯一的 column）。如果你有 n 个该对象的话，就不能用 @OneToOne 和 @ForeignKey了，而是用 @OneToMany 之类。我们来看一下代码：
 ```java
 @Entity(name = "PersonProxy")
@@ -237,16 +239,16 @@ public class EmailConverter implements Converter<List<Email>, String> {
 ```
 　　EmailConverter 会在写 insert 时将 List<Email> 转换成 String 存进去，在 select 的时候会将 String 转换成我们需要的 List<Email>。
 
-5.为什么官方的例子里面的类都是实现了Persistable，你这里都没有？
+5.为什么官方的例子里面的类都是实现了Persistable，你这里都没有？    
 　　这里不写是为了避免误导大家。如果要实现Persistable的话，在下面代码中都要带上<Persistable>用于限定使用SingleEntityStore返回值的类型，那么在执行data.select().get()等操作就不会返回Object类型了。
 ```java
 SingleEntityStore<Persistable> dataStore = RxSupport.toReactiveStore(new EntityDataStore<Persistable>(configuration))
 ```
 ##  Database Operations
 　　数据库的操作是通过前面的`SingleEntityStore data`进行的。    
-　　我们之前建过 Person，Address 等表。在编译后，会在项目的build目录里面生成PersonEntity, AddressEntity（类名是可以通过 @Entity 注解里的 name 字段指定，上面我指定Person类生成的代理类的类名为PersonProxy）等代理类，这个类里面会生成很多方法，包含 get 和 set 方法，所以在使用的时候使用这个代理类会比较方便。    
+　　我们之前建过 Person，Address 等表。在编译后，会在项目的 build 目录里面生成 PersonEntity, AddressEntity（类名是可以通过 @Entity 注解里的 name 字段指定，上面我指定 Person 类生成的代理类的类名为 PersonProxy）等代理类，这个类里面会生成很多方法，包含 get 和 set 方法，所以在使用的时候使用这个代理类会比较方便。    
 　　Person 生成的代理类为 PersonProxy，Address 和 Phone 因为未指定 name，所以默认为 AddressEntity，PhoneEntity。    
-　　这里简单介绍Requery的基本操作，不再赘述sql语句的用法。
+　　这里简单介绍 Requery 的基本操作，不再赘述 sql 语句的用法。
 
 **Insert:**
 ```java
@@ -269,7 +271,7 @@ data.insert(people)
 ```
 由于我们上面使用了 SingleEntityStore ，所以 data.insert(people) 默认就是在子线程中执行的，会返回一个 Single。    
 
-**select / find**
+**select / find**    
 　　通过主键查找，返回单条数据
 ```java
 data.findByKey(PersonProxy.class, “主键值”)
