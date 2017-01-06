@@ -173,7 +173,7 @@ public abstract class Phone {
 ```
 　　在 List<Phone> phone 上使用 @JunctionTable 代表 Person 才是主表，那么可以通过 Person 往 Phone 表中插入数据，而 Phone 表不能往 Person 表中插入。和 @OneToOne 以及 @OneToMany 不同的是它不会往 Person 表或者 Phone 表中添加任何相关的列，而是创建一个新表来存入这两张表的主键。
 
-4.这个类里面如果只是关联一个普通的类而不是表该怎么操作，@ForeignKey @OneToMany 等仅仅针对外表而言的呀
+4.这个类里面如果只是关联一个普通的类而不是表该怎么操作，@ForeignKey @OneToMany 等仅仅针对外表而言的呀    
 　　上面的描述可以用以下代码表述：
 ```java
 @Entity(name = "PersonProxy")
@@ -375,4 +375,4 @@ SqlCipherDatabaseSource source = new SqlCipherDatabaseSource(this, Models.DEFAUL
 　　当你进入/data/data目录去看数据库时发现已经打不开了。
 
 ## Migrations
-　　DatabaseSource继承了SqliteOpenHelper并重载了onUpgrade()方法进行基本的数据库迁移。如果你只是增加表或者往表中新增字段的话，只需要修改一下数据库的版本号就行了，不需要进行任何操作。由于sqlite是不支持修改表中的字段
+　　DatabaseSource继承了SqliteOpenHelper并重载了onUpgrade()方法进行基本的数据库迁移。如果你只是增加表或者往表中新增字段的话，只需要修改一下数据库的版本号就行了，不需要进行任何操作。（由于sqlite本身是不支持修改表中的字段，删除字段等操作，所以Requery同样也不支持）
